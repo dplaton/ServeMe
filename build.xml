@@ -1,0 +1,38 @@
+<project name="ServeMe" default="build" basedir=".">
+
+	<property name="src.dir" value=".\src" />
+	<property name="dest.dir" value=".\bin\" />
+	<property name="src.dir.classes" value="${src.dir}\classes" />
+	<property name="main.class" value="ro.dp.serveme.ServeMe"/>
+	<path id="build.classpath">
+		<fileset dir=".\lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${dest.dir}"/>
+		<delete dir="${src.dir.classes}"/>
+	</target>
+
+	<target name="prepare" depends="clean">
+		<mkdir dir="${dest.dir}"/>
+		<mkdir dir="${src.dir.classes}"/>
+	</target>
+	
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src.dir}" destdir="${src.dir.classes}" includeantruntime="false">
+			<classpath refid="build.classpath" />
+		</javac>
+	</target>
+
+	<target name="build" depends="compile">
+		<jar destfile="${dest.dir}\\ServeMe.jar" basedir="${src.dir.classes}">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="${main.class}"/>
+			</manifest>
+		</jar>
+		<delete dir="${src.dir.classes}"/>
+	</target>
+</project>
